@@ -8,10 +8,10 @@
  HTTP [[server|serve]] or [[dumped|render]] as `.html` files."
 native("jvm")
 module com.github.tombentley.deck "1.0.0" {
-    import ceylon.collection "1.2.3";
-    shared import ceylon.html "1.2.3";
-    import ceylon.http.common "1.2.3";
-    import ceylon.http.server "1.2.3";
+    import ceylon.collection "1.3.1";
+    shared import ceylon.html "1.3.1";
+    import ceylon.http.common "1.3.1";
+    import ceylon.http.server "1.3.1";
     //TODO support slides in markdown
     import ceylon.markdown.core "1.0.0";
     import ceylon.markdown.html "1.0.0";
