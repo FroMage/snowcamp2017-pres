@@ -20,11 +20,12 @@ Pre code(String text)
 "The presentation"
 Presentation presentation =>
     Presentation { 
-        title = "The most incredible Ceylon presentation you'll ever see"; 
-        description = "A presentation about the Ceylon programing language 
-                       and how it can be used to write microservices and 
-                       Android applications"; 
-        author = "Tom Bentley"; 
+        title = "Ceylon 1.3 dans tous ses états";
+        description = "Depuis la sortie de Ceylon 1.3, Ceylon marche sur quasi tous les environements. 
+                       Lors de cette conférence nous vous montrerons comment faire tourner Ceylon 
+                       sur un maximum de plate-formes : Vert.x, WildFly, WildFly Swarm, Android, 
+                       iPhone, Spring Boot, OSGi, fat-jar et JBoss Modules. Un max de démos, un minimum de bla-bla !"; 
+        author = "Stéphane Épardaud"; 
         slides = intro.chain(part1).chain(part2).chain(part3).chain(part4).chain(part5).chain(outro); 
     };
 

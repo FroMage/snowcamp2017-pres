@@ -14,9 +14,9 @@ import com.github.tombentley.deck {
     (State state) => State(0, 0, 0),
     Slide{
         id="title";
-        H2{"The most incredible Ceylon presentation you'll ever see"},
-        H3{"Tom Bentley"},
-        H3{"Javazone, Oslo, September 2016"}
+        H2{"Ceylon 1.3 dans tous ses états"},
+        H3{"Stéphane Épardaud"},
+        H3{"SnowCamp, Grenoble, 2017"}
         
     },
     transitions.left,
