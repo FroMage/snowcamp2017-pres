@@ -26,7 +26,7 @@ Presentation presentation =>
                        sur un maximum de plate-formes : Vert.x, WildFly, WildFly Swarm, Android, 
                        iPhone, Spring Boot, OSGi, fat-jar et JBoss Modules. Un max de démos, un minimum de bla-bla !"; 
         author = "Stéphane Épardaud"; 
-        slides = intro.chain(part1).chain(part2).chain(part3).chain(part4).chain(part5).chain(outro); 
+        slides = expand{ intro, part1, part2, part3, part4, part5, outro};
     };
 
 "Generate the presentation as HTML"
