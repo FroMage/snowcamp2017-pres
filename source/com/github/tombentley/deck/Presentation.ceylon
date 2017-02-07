@@ -28,7 +28,7 @@ shared class Presentation(
         if (exists id = s.id) {
             return "#/" + id;
         } else {
-            return "#step-``prepped.firstIndexWhere((slide) => slide == s) else 0``";
+            return "#step-``prepped.firstIndexWhere((trans -> slide) => slide == s) else 0``";
         }
     }
     
