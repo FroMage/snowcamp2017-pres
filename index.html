@@ -134,24 +134,19 @@ It follows from the language assignability rules.</p>
 "<code>String</code> or null" it could be <code>null</code>.</li>
       <li>We can branch
 to distinguish the two
-cases:</li>
-    </ul>
-    <pre class="code ceylon"><code data-language="ceylon">void hello(String? name) {
+cases:<pre class="code ceylon"><code data-language="ceylon">void hello(String? name) {
     if (exists name) {
          print("Hello ``name``");
     } else {
          print("Hello world");
     }
-}
-</code></pre>
+}</code></pre>
+      </li>
+    </ul>
     <ul>
-      <li>
-        <p>The <code>if (exists ...)</code> construct is (type-narrowing) non-null check</p>
-      </li>
-      <li>
-        <p>Or I could say <code>if (is String name)</code>, a combined
-typecheck-and-downcast in one.</p>
-      </li>
+      <li>The <code>if (exists ...)</code> construct is (type-narrowing) non-null check</li>
+      <li>Or I could say <code>if (is String name)</code>, a combined
+typecheck-and-downcast in one.</li>
     </ul>
   </div>
   <div id="switch" class="step slide" data-x="5000" data-y="800" data-z="0">
@@ -189,20 +184,17 @@ case from the <code>Null</code> case.</li>
         <p>But within the block guarded by the <code>if (exists ...)</code>
 or <code>case(is ...)</code> the compiler treats the
 <code>name</code> value as having the narrower type <code>String</code>.</p>
-      </li>
-    </ul>
-    <pre class="code ceylon"><code data-language="ceylon">// outside if block name has type String?
+        <pre class="code ceylon"><code data-language="ceylon">// outside if block name has type String?
 // (so "Hello ``name``" is a compile error)
 if (exists name) {
      // inside block name has type String
      // (so "Hello ``name``" is allowed)
-}
-</code></pre>
-    <ul>
-      <li>
-        <p>This synergy of control flow and
-type narrowing is called <em>flow typing</em>.</p>
+}</code></pre>
       </li>
+    </ul>
+    <ul>
+      <li>This synergy of control flow and
+type narrowing is called <em>flow typing</em>.</li>
     </ul>
   </div>
   <div id="union1" class="step slide" data-x="7000" data-y="800" data-z="0">
@@ -217,16 +209,20 @@ type narrowing is called <em>flow typing</em>.</p>
         <p>In a type <code>|</code> is an operator which means "or".</p>
       </li>
       <li>
-        <p>It lets us list a bunch of cases.
-We can use arbitrary other types with <code>|</code>.</p>
+        <p>It lets us list a bunch of cases.</p>
       </li>
     </ul>
+    <p>We can use arbitrary other types with <code>|</code>.</p>
     <pre class="code ceylon"><code data-language="ceylon">String|Integer|Boolean
 </code></pre>
     <p>just means "<code>String</code> or <code>Integer</code> or <code>Boolean</code>". </p>
     <ul>
-      <li>We can still use <code>if</code> or <code>switch</code> to distinguish the cases.</li>
-      <li>We call these types <em>union types</em>.</li>
+      <li>
+        <p>We can still use <code>if</code> or <code>switch</code> to distinguish the cases.</p>
+      </li>
+      <li>
+        <p>We call these types <em>union types</em>.</p>
+      </li>
     </ul>
   </div>
   <div id="defaulted-parameters" class="step slide" data-x="8000" data-y="800" data-z="0">
@@ -267,10 +263,10 @@ greeting.</p>
       </li>
       <li>
         <p>Any function that takes a single <code>String</code>
-parameter will do.
-The type of such a function is</p>
+parameter will do.</p>
       </li>
     </ul>
+    <p>The type of such a function is</p>
     <pre class="code ceylon"><code data-language="ceylon">Anything(String)
 </code></pre>
     <p>(<code>Anything</code> because I don't care what the
@@ -329,9 +325,13 @@ be able to iterate it:</p>
 </code></pre>
     <ul>
       <li>
-        <code>{String*}</code> means "<code>Iterable</code> of zero or more <code>String</code>s".</li>
-      <li>(There's also <code>{String+}</code>
-meaning "<code>Iterable</code> of one or more <code>String</code>s").</li>
+        <p>
+          <code>{String*}</code> means "<code>Iterable</code> of zero or more <code>String</code>s".</p>
+      </li>
+      <li>
+        <p>(There's also <code>{String+}</code>
+meaning "<code>Iterable</code> of one or more <code>String</code>s").</p>
+      </li>
     </ul>
   </div>
   <div id="inference" class="step slide" data-x="15000" data-y="800" data-z="0">
@@ -370,19 +370,14 @@ most specific type (by looking at the assigned expression).</p>
     <ul>
       <li>How might I call <code>helloAll()</code>?</li>
       <li>I need an iterable.</li>
-      <li>I can use an <em>iterable literal</em>:</li>
+      <li>I can use an <em>iterable literal</em>:<pre class="code ceylon"><code data-language="ceylon">value names = {"Tom", "Dick", "Harry"};
+helloAll(names);</code></pre>
+      </li>
     </ul>
-    <pre class="code ceylon"><code data-language="ceylon">value names = {"Tom", "Dick", "Harry"};
-helloAll(names);
-</code></pre>
     <ul>
+      <li>The type of <code>names</code> is <code>{String+}</code> ("<code>Iterable</code> of one or more <code>String</code>s").</li>
       <li>
-        <p>The type of <code>names</code> is <code>{String+}</code> ("<code>Iterable</code> of one or more <code>String</code>s").</p>
-      </li>
-      <li>
-        <p>
-          <code>Iterable</code> literals are <em>lazily evaluated</em>.</p>
-      </li>
+        <code>Iterable</code> literals are <em>lazily evaluated</em>.</li>
     </ul>
   </div>
   <div id="tuple-literals" class="step slide" data-x="18000" data-y="800" data-z="0">
@@ -501,7 +496,8 @@ going to see some real Ceylon code, using Eclipse,
 IntelliJ and the CLI tools.</p>
   </div>
   <div id="part-2" class="step slide" data-x="0" data-y="1600">
-    <h2>A microservice using <code>ceylon.http.server</code> </h2>
+    <h2>A microservice using <code>ceylon.http.server</code>
+    </h2>
     <ul>
       <li>
         <p>Demo in Eclipse</p>
@@ -553,18 +549,18 @@ project) under the covers</p>
       <li>
         <p>The <code>ceylon.http.server</code> API is quite low level,
 (e.g. had to write convenience method for getting parameters)</p>
-      </li>
-      <li>
-        <p>But the requirements are simple enough that the solution doesn't
-need to be complex.</p>
-      </li>
-      <li>
-        <p>It works!</p>
+        <ul>
+          <li>But the requirements are simple enough that the solution doesn't
+need to be complex.<ul>
+              <li>It works!</li>
+            </ul>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
   <div id="part-3" class="step slide" data-x="0" data-y="2400">
-    <h2>Two microservices using Vert.x </h2>
+    <h2>Two microservices using Vert.x</h2>
     <ul>
       <li>
         <p>Demo on the command line</p>
@@ -638,7 +634,7 @@ on top of Vert.x core.</p>
     </ul>
   </div>
   <div id="part-4" class="step slide" data-x="0" data-y="3200">
-    <h2>A microservice using gyokuro </h2>
+    <h2>A microservice using gyokuro</h2>
     <ul>
       <li>Demo in IntelliJ</li>
     </ul>
@@ -677,8 +673,7 @@ what happened next...</p>
     <p>Because <strong>we're building a click bait generator here</strong>.</p><small>
 So if you really were expecting to see the most incredible 
 Ceylon presentation ever, well, sorry!
-</small>
-  </div>
+</small></div>
   <div class="step slide" data-x="4000" data-y="3200" data-z="0">
     <h3>Demo</h3>
   </div>
@@ -697,7 +692,7 @@ Ceylon presentation ever, well, sorry!
     </ul>
   </div>
   <div id="part-5" class="step slide" data-x="0" data-y="4000">
-    <h2>An Android app </h2>
+    <h2>An Android app</h2>
     <ul>
       <li>
         <p>Demo in Android Studio</p>
