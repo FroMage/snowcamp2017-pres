@@ -1,0 +1,51 @@
+Demos:
+services:
+ - http server
+ - vertx
+ - vertx web
+ - gyokuro
+ - android
+ - iphone
+
+Switch to Java 8!!
+
+envs:
+ - vertx
+  -> Ctrl - F11
+  -> http://localhost:9001/
+ - jboss modules
+  $ ceylon run snowcamp2017.vertx
+  -> http://localhost:9001/
+ - flat classpath
+  $ ceylon run --flat-classpath snowcamp2017.vertx
+  -> http://localhost:9001/
+ - main
+  $ ceylon classpath snowcamp2017.vertx
+  $ java -cp `ceylon classpath snowcamp2017.vertx` snowcamp2017.vertx.run_
+  -> http://localhost:9001/
+ - fat-jar
+   $ ceylon fat-jar snowcamp2017.vertx
+   $ java -jar snowcamp2017.vertx-1.0.0.jar
+ - wildfly
+  $ ceylon war snowcamp2017.wildfly
+  $ cp snowcamp2017.wildfly-1.0.0.war ~/no-backup/src/wildfly-10.0.0.Final/standalone/deployments/
+  $ ~/no-backup/src/wildfly-10.0.0.Final/bin/standalone.sh
+  -> http://localhost:8080/snowcamp2017.wildfly-1.0.0/rest/hello
+ - wildfly swarm
+  $ ceylon swarm --provided-module javax:javaee-api snowcamp2017.wildfly
+  $ java -jar snowcamp2017.wildfly-1.0.0-swarm.jar
+  -> http://localhost:8080/rest/hello
+ - spring boot
+  $ ceylon run --flat-classpath snowcamp2017.springboot
+  -> http://localhost:8080
+ - sparkframework TODO
+  -> Ctrl - F11
+  -> http://localhost:4567/hello
+ - OSGi karaf
+  $ karaf
+  $> feature:repo-add https://downloads.ceylon-lang.org/osgi/distribution/1.3.1/karaf-features.xml
+  $> feature:repo-add https://downloads.ceylon-lang.org/osgi/sdk/1.3.1/karaf-features.xml
+  $> feature:install ceylon.distribution.runtime
+  $> feature:install ceylon.sdk.full
+  $> bundle:install file:/home/stephane/src/java-eclipse/microdroid-demo/modules/com/github/tombentley/javazone2016/demo/server/number/1.0.0/com.github.tombentley.javazone2016.demo.server.number-1.0.0.car
+
