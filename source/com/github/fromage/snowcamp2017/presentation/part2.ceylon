@@ -1,6 +1,7 @@
 import ceylon.html {
     P,
-    A
+    A,
+    Img
 }
 
 import com.github.tombentley.deck {
@@ -11,53 +12,54 @@ import com.github.tombentley.deck {
 }
 
 {Slide|Transition*} part2 = [
-    (State state) => State(0, 1600),
+    (State state) => State(0, 800),
     Slide{
         id="part-2";
-        """## A microservice using `ceylon.http.server` 
+        """## Un microservice de nombre aléatoire avec `ceylon.http.server` 
            
-           * Demo in Eclipse
+           ```plain
+           http://localhost:8081/numbers/number?min={min}&max={max}
+           ```
+
+           * Demo dans Eclipse
         """
     },
     transitions.left,
     Slide{
-        id="number-api";
-        """### A number service
+        id="part-3";
+        """## Deux microservices pour servir des adjectifs et verbes avec Vert.x 
            
-           * We're going to look at a very simple microservice for exposing 
-             a random number generator.
-           
-           *  Clients will make `GET` requests to
-            
            ```plain
-           http://localhost:8081/numbers/number?min={min}&max={max}
+           http://localhost:8082/adjective/adjective
+           http://localhost:8082/adjective/adverb
+           
+           http://localhost:8083/verb
            ```
            
-           * They will receive a response containing a random integer
-             between `min` and `max` (inclusive).
+           * Demo dans Eclipse
+           """
+    },
+    Slide{
+        id="part-4";
+        """## Un microservice de générateur click-bait dans gyokuro""",
+        Img{src="architecture.svg"; width=780;},
         """
-        
-     },
-     Slide {
-         """### Implementation
-            
-            * We're going to use `ceylon.http.server`, part of the Ceylon SDK
-            * `ceylon.http.server` uses undertow and xnio (from the JBoss 
-              project) under the covers
-            * So we benefit from all their engineering efforts "for free"
-            """
-     },
-     Slide {"### Demo"},
-     Slide{
-         """### Critique
-            
-            Criticisms of the number service:
-            
-             * The `ceylon.http.server` API is quite low level, 
-               (e.g. had to write convenience method for getting parameters)
-             * But the requirements are simple enough that the solution doesn't 
-               need to be complex.
-             * It works!
-             """
-     }
+           * Demo dans Eclipse
+           """
+    },
+    Slide{
+        id="part-5";
+        """## Application Android
+           
+           * Demo dans Android Studio
+           """
+    },
+    Slide{
+        id="part-5b";
+        """## Application iOS
+           
+           * Avec Cordova
+           * Demo sur la maudite machine grise
+           """
+    }
 ];

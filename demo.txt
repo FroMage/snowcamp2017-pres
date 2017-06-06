@@ -1,13 +1,14 @@
 Demos:
+
 services:
- - http server
- - vertx
- - vertx web
- - gyokuro
+ - api (show)
+ - http server / server.number (run in IDE)
+ - client to test
+ - vertx / server.adjective (run in IDE)
+ - vertx web / server.verb (run in IDE, show serialisation at http://localhost:8083/verb)
+ - gyokuro / server.template (run in IDE, show results at http://localhost:8084/titles/Stef)
  - android
  - iphone
-
-Switch to Java 8!!
 
 envs:
  - vertx
@@ -38,7 +39,7 @@ envs:
  - spring boot
   $ ceylon run --flat-classpath snowcamp2017.springboot
   -> http://localhost:8080
- - sparkframework TODO
+ - sparkframework
   -> Ctrl - F11
   -> http://localhost:4567/hello
  - OSGi karaf
@@ -48,4 +49,5 @@ envs:
   $> feature:install ceylon.distribution.runtime
   $> feature:install ceylon.sdk.full
   $> bundle:install file:/home/stephane/src/java-eclipse/microdroid-demo/modules/com/github/tombentley/javazone2016/demo/server/number/1.0.0/com.github.tombentley.javazone2016.demo.server.number-1.0.0.car
+  -> run number client
 

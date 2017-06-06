@@ -21,19 +21,31 @@ import com.github.tombentley.deck {
     },
     transitions.left,
     Slide{
-        id="ceylon-is";
-        """### What is Ceylon?
+        id="plan";
+        """### Bien sûr que j’ai un plan…
            
-           Ceylon...
+           * très peu de slides
+           * pas mal de démos
+             * certaines piquées à Tom Bentley
+             * enfin, adaptées
+             * mais pas seulement…
+           * et puis un poil de slides ensuite
+           * pour la fin
+           """
+    },
+    Slide{
+        id="tourne";
+        """### Et pourtant, ça tourne !
            
-           * is a modern, type-safe programming language which runs on 
-             Java and JavaScript virtual machines,
-           * is also a platform coming with its own modular SDK,
-           * is supported by discoverable CLI tools,
-           * has a mature Eclipse IDE,
-           * has an awesome new IntelliJ IDE,
-           * is well-suited to developing microservices, and
-           * is Android-enabled
+           Ceylon ça tourne
+           
+           * sur la JVM, sur JavaScript
+           * sur JBoss Modules, OSGi, Java 9, classpath, Maven, Gradle
+           * sur Vert.x, Gyokuro, WildFly, Swarm, SpringBoot, Spark Framework
+           * sur Android, iOS
+           * sur Eclipse, IntelliJ, Android Studio, VSCode, Vim
+           * sur la ligne de commande
+           * sur OpenShift
            """
     }
 };
