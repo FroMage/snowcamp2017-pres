@@ -11,8 +11,8 @@ import com.github.tombentley.deck {
     transitions
 }
 
-{Slide|Transition*} part2 = [
-    (State state) => State(0, 800),
+{Slide|Transition*} part5 = [
+    (State state) => State(0, 1600),
     Slide{
         id="part-2";
         """## Un microservice de nombre aléatoire avec `ceylon.http.server` 

@@ -20,13 +20,16 @@ Pre code(String text)
 "The presentation"
 Presentation presentation =>
     Presentation { 
-        title = "Ceylon 1.3 dans tous ses états";
-        description = "Depuis la sortie de Ceylon 1.3, Ceylon marche sur quasi tous les environements. 
-                       Lors de cette conférence nous vous montrerons comment faire tourner Ceylon 
-                       sur un maximum de plate-formes : Vert.x, WildFly, WildFly Swarm, Android, 
-                       iPhone, Spring Boot, OSGi, fat-jar et JBoss Modules. Un max de démos, un minimum de bla-bla !"; 
+        title = "Introduction to Ceylon: a modern language with modern tooling";
+        description = "Ceylon is a modern programming language that takes the best of the Java language
+                       and adds all you need to efficiently write modern applications: a module system, 
+                       a new, more expressive and flexible type system, much reduced boilerplate, 
+                       functional programming, great tooling and support for a vast number of deployment 
+                       and interoperation with both the JVM (Maven, Jigsaw, OSGi…) world and the JavaScript world (NPM…).
+
+                       In this presentation we will discover Ceylon, some of its unique features and what its strenghts are."; 
         author = "Stéphane Épardaud"; 
-        slides = expand{ intro, part2, part6, outro};
+        slides = expand{ intro, part1, part2, part3, part4, outro};
     };
 
 "Generate the presentation as HTML"

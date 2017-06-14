@@ -4,13 +4,18 @@ import com.github.tombentley.deck {
     State,
     transitions
 }
+import ceylon.html {
+    Img
+}
 {Slide|Transition*} part1 => [
     (State state) => State(0, 800),
     Slide{
-        """## A lightning tour of the language
+        """## A quick tour of the language
            
-           * Enough of the language to understand the demos.
-           * 15 minutes (or so).
+           * I usually teach the language via demos, but
+           * I've been told most of you will be C++ users, so
+           * I've added slides to describe more of the language.
+           * We can skip to an IDE for demos if you want more concrete examples.
         """
     },
     transitions.left,
@@ -35,8 +40,29 @@ import com.github.tombentley.deck {
            """
     },
     Slide{
+        id="hello-doc";
+        """### Documentation
+           
+           Let's add docs:
+           
+               "This is _Markdown_ documentation"
+               shared void hello(String name) {
+                   print("Hello ``name``");
+               }
+           
+           A string literal before a declaration is API documentation.
+           
+           Syntax sugar for the `doc` annotation:
+
+               doc("This is _Markdown_ documentation")
+               shared void hello(String name) {
+                   print("Hello ``name``");
+               }
+           """
+    },
+    Slide{
         id="null";
-        """### `String` means 'string'
+        """### `String` means _I need a value_
            
            I can't do this:
            
@@ -44,7 +70,7 @@ import com.github.tombentley.deck {
            
            * Ceylon is very particular about `null`.
            * `String` means "a string" and not
-             "a string or null" (like it does in Java).
+             "a string or null" (like it does in Java or C++).
            * In fact in Ceylon `null` has its own type, `Null`.
            * So I'm not allowed to pass `null` (or something 
              that might be null) to something that's 
@@ -132,7 +158,20 @@ import com.github.tombentley.deck {
            
            * This synergy of control flow and 
             type narrowing is called *flow typing*.
-        """
+           """
+    },
+    Slide{
+        id="flow-typing-assert";
+        """### Assertions and flow typing
+           
+           If you know something has to exist, you don't need `if`
+           
+               void badlyTypedHello(String? name) {
+                   assert(exists name);
+                   // from then on, name has type String
+                   print("Hello ``name``, how are you?");
+               }
+           """
     },
     Slide{
         id="union1";
@@ -158,6 +197,48 @@ import com.github.tombentley.deck {
         """
     },
     Slide{
+        """### `exists` was just sugar too!
+           
+           This `exists` operator is just syntax sugar. It means
+           
+               is Object x
+           
+           which checks if a value `x` of type `T` is of type `T & Object`.
+           
+           * In a type `&` is an operator which means "and".
+           * It lets us list a bunch of cases that all have to
+             be implemented.
+           
+           We can use arbitrary other types with `&`.
+           
+               Runnable & Destroyable
+           
+           just means "`Runnable` and `Destroyable`". 
+           
+           * We call these types *intersection types*.
+           """
+    },
+    Slide{
+        Img{src="type-hierarchy.svg"; width=500; style="float: right";},
+
+        """### What does `String? & Object` mean?
+           
+           Let's decompose it to `<String | Null> & Object`.
+           
+           * Let's distribute the intersection:
+             * `<String & Object> | <Null & Object>`
+           * The top of the object hierarchy is `Anything`.
+             * It has two disjoint subtypes: `Object` and `Null`.
+           * `String` extends `Object`, so its intersection with
+             `Object` is `String`:
+             * `String | <Null & Object>`.
+           * `Object` and `Null` are disjoint, so their intersection
+             is `Nothing` (the bottom type which has no instance):
+             * `String | Nothing`
+           * So the result is just `String`.
+           """
+    },
+    Slide{
         id="defaulted-parameters";
         """### Defaulted parameters
            
@@ -168,7 +249,7 @@ import com.github.tombentley.deck {
            have method overloading like Java does. 
            But we *can* give parameters a default value.
            
-               void hello(String name="world") {
+               void hello(String name = "world") {
                     print("Hello ``name``");
                 }
            
@@ -189,250 +270,5 @@ import com.github.tombentley.deck {
            I now 
            want to abstract away where we're sending the 
            greeting."""
-    },
-    Slide{
-        id="hof2";
-        """### Types of functions
-        
-           * I don't need an interface to do this. 
-           * All I need is something that consumes `String`s.
-           * Any function that takes a single `String` 
-             parameter will do.
-           
-           The type of such a function is
-           
-               Anything(String)
-           
-           (`Anything` because I don't care what the 
-           function returns).
-           
-           This is an example of the `Callable` type."""
-    },
-    Slide{
-        id="hof3";
-        """### Callables & function references
-        
-           Let's add a parameter for that:
-           
-               void hello(String name, 
-                          Anything(String) emit) {
-                   emit("Hello ``name``");
-               }
-           
-           I invoke the function `emit` by adding an argument list.
-           At a call site I have to pass a function:
-        
-               hello("Tom", print);
-                
-           `print` (without parentheses) is just a reference to the 
-           `print()` function."""
-    },
-    Slide{
-        id="hof4";
-        """### Function parameters
-           
-           Alternatively instead of declaring `emit` as a
-           `Callable`-type value parameter,
-           I can declare `emit` as a function parameter:
-           
-               void hello(String name, 
-                          void emit(String str)) {
-                   emit("Hello ``name``");
-               }
-           
-           It means (almost) exactly the same thing.
-        """
-    },
-    Slide{
-        id="hof5";
-        """### Function references
-           
-           With this abstraction I can print to a file, or a 
-           socket or whatever:
-           
-               hello("Tom", fileWriter.write);
-               hello("Tom", socket.write);
-               hello("Tom", stringBuilder.append);
-               // etc.
-        """
-    },
-    Slide{
-        id="iterable";
-        """### Iteration
-           
-           What if I want to greet several people? 
-           
-           I need `names` rather than a single `name`, and I need to 
-           be able to iterate it:
-           
-               void helloAll(void emit(String str), 
-                             {String*} names) {
-                   for (name in names) {
-                       emit("Hello ``name``\n");
-                   }
-               }
-           
-           * `{String*}` means "`Iterable` of zero or more `String`s".
-           * (There's also `{String+}`
-             meaning "`Iterable` of one or more `String`s").
-        """
-    },
-    Slide{
-        id="inference";
-        """### Look, no types!
-               
-           Note that I didn't need to explicitly declare the type of
-           `name` in that `for` statement.
-           
-               for (name in names) {
-           
-           The compiler looks on the right hand side (at `names`), sees an 
-           `Iterable<String>` so infers that `name` must be a `String`."""
-    },
-    Slide{
-        id="inference2";
-        """### Type inference
-           
-           In fact the compiler can figure out the type of 
-           a declaration from an expression for local 
-           values and functions too:
-           
-               // compiler knows greeting is a String
-               value greeting = "Hello ";
-           
-           * We can usually use the `value` (or `function`) 
-             keyword where we  would have to write a type.
-           * The compiler always chooses the single 
-             most specific type (by looking at the assigned expression).
-           * This is called *type inference*.
-           
-             """
-    },
-    Slide{
-        id="iterable-literals";
-        """### Iterable literals
-           
-           * How might I call `helloAll()`? 
-           * I need an iterable.
-           * I can use an *iterable literal*:
-           
-               value names = {"Tom", "Dick", "Harry"};
-               helloAll(names);
-           
-           * The type of `names` is `{String+}` ("`Iterable` of one or more `String`s").
-           * `Iterable` literals are *lazily evaluated*.
-           """
-    },
-    Slide{
-        id="tuple-literals";
-        """###  Tuple literals
-           
-           Alternatively I could use a `Tuple` to call `helloAll()`
-           (`Tuple` inherits `Iterable`):
-           
-               value names = ["Tom", "Dick", "Harry"];
-               helloAll(names);
-               
-           * The type of `names` is `String[3]` (which means `[String, String, String]`).
-           * A `Tuple` knows the type of each of its elements (so I can have
-           `[String, Integer, Boolean]` for example).
-           * A `[String, Integer, Boolean]` is a `{String|Integer|Boolean+}`
-        """
-    },
-    Slide{
-        id="comprehension";
-        """### Comprehension
-           
-           A comprehension lets me create an iterable or tuple by filtering, 
-           mapping and combining other iterables.
-           
-               void greetDogOwners({Animal*} pets) {
-                   helloAll({for (pet in pets)
-                               if (is Dog pet) 
-                                 pet.owner});
-               }
-           
-           * Rather than listing elements in the iterable or tuple literal I use `for` within the brackets,
-           * the `if` filters out the non-`Dog`s,
-           * then I get the `Dog`'s `owner`.
-           * In general, I can combine `for` and `if` arbitrarily.
-           * Easier to read that `map()`, `filter()` etc.
-           """
-    },
-    Slide{
-        id="class";
-        """### A class
-           
-           Let's use a class to say more than just "hello":
-           
-               class Greeter(void emit(String str)) {
-                   value greeting = "Hello";
-                   value parting = "Cheerio";
-                   shared void hello(String name) {
-                       emit("``greeting`` ``name``");
-                   }
-                   shared void bye(String name) { /* ... */ }
-                   }
-               }
-           
-           * The class has its own parameter list. 
-           * I can use `emit` because it is in an outer scope of `hello`.
-           * As before, `shared` allows the methods to be visible outside their container
-            (`Greeter` in this case).
-        """
-    },
-    Slide{
-        id="";
-        """### Instantiation and invocation
-        
-           I instantiate the class just by invoking it 
-           (no need for `new`). 
-           
-           I can do that with positional arguments:
-            
-               Greeter(print);
-           
-           Or I can invoke with *named arguments*:
-           
-               Greeter{
-                   emit=print;
-               };
-           
-           Note: each name binding ends with a `;`."""
-    },
-    Slide{
-        id="named-arguments";
-        """### Named arguments
-           
-           With named argument invocation there's some flexibility 
-           in how I pass `Iterable` arguments. 
-           I can pass them by name:
-        
-               helloAll{
-                   names=["Tom", "Dick", "Harry"];
-               };
-           
-           Or if there is a single unspecified `Iterable` parameter
-           I can list them:
-        
-               helloAll{
-                   "Tom", "Dick", "Harry"
-               };
-        """
-    },
-    Slide {
-        id="enough";
-        """### Just enough
-           
-           We've covered enough of the language that you should be able 
-           to understand *most* of the code you're going to see.
-           
-           If you want to know more about the language, check out 
-           the 'Tour of Ceylon' ([http://ceylon-lang.org/documentation/current/tour](http://ceylon-lang.org/documentation/current/tour/))
-           
-           We are now 
-           going to see some real Ceylon code, using Eclipse, 
-           IntelliJ and the CLI tools.
-           """
     }
 ];

@@ -37,7 +37,7 @@ shared class Presentation(
              <html lang='en'>
                <head>
                   <meta charset='utf-8' />
-                  <meta name='viewport' content='width=1024' />
+                  <meta name='viewport' content='width=1920' />
                   <meta name='apple-mobile-web-app-capable' content='yes' />
                   <title>``title``</title>
                   

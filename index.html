@@ -2,14 +2,17 @@
   <html lang='en'>
     <head>
        <meta charset='utf-8' />
-       <meta name='viewport' content='width=1024' />
+       <meta name='viewport' content='width=1920' />
        <meta name='apple-mobile-web-app-capable' content='yes' />
-       <title>Ceylon 1.3 dans tous ses états</title>
+       <title>Introduction to Ceylon: a modern language with modern tooling</title>
        
-       <meta name='description' content='Depuis la sortie de Ceylon 1.3, Ceylon marche sur quasi tous les environements. 
-Lors de cette conférence nous vous montrerons comment faire tourner Ceylon 
-sur un maximum de plate-formes : Vert.x, WildFly, WildFly Swarm, Android, 
-iPhone, Spring Boot, OSGi, fat-jar et JBoss Modules. Un max de démos, un minimum de bla-bla !' />
+       <meta name='description' content='Ceylon is a modern programming language that takes the best of the Java language
+and adds all you need to efficiently write modern applications: a module system, 
+a new, more expressive and flexible type system, much reduced boilerplate, 
+functional programming, great tooling and support for a vast number of deployment 
+and interoperation with both the JVM (Maven, Jigsaw, OSGi…) world and the JavaScript world (NPM…).
+
+In this presentation we will discover Ceylon, some of its unique features and what its strenghts are.' />
        <meta name='author' content='Stéphane Épardaud' />
        
        <link href='css/presentation.css' rel='stylesheet' />
@@ -26,201 +29,849 @@ iPhone, Spring Boot, OSGi, fat-jar et JBoss Modules. Un max de démos, un minimu
       </div>
       <div id="impress">
   <div id="title" class="step slide" data-x="0" data-y="0" data-z="0">
-    <h2>Ceylon 1.3 dans tous ses états</h2>
+    <h2>Introduction to Ceylon: a modern language with modern tooling</h2>
     <h3>Stéphane Épardaud</h3>
-    <h3>SnowCamp, Grenoble, 2017</h3>
+    <h3>Global Technical Forum, Amadeus, 2017</h3>
   </div>
   <div id="plan" class="step slide" data-x="1000" data-y="0" data-z="0">
-    <h3>Bien sûr que j’ai un plan…</h3>
+    <h3>The menu for today</h3>
     <ul>
-      <li>très peu de slides</li>
-      <li>pas mal de démos<ul>
-          <li>certaines piquées à Tom Bentley<ul>
-              <li>enfin, adaptées<ul>
-                  <li>mais pas seulement…</li>
-                </ul>
-              </li>
-            </ul>
+      <li>Ceylon language primer</li>
+      <li>Demos</li>
+      <li>Questions</li>
+    </ul>
+  </div>
+  <div class="step slide" data-x="2000" data-y="0" data-z="0">
+    <h3>What is Ceylon?</h3>
+    <ul>
+      <li>
+        <p>Modern programming language</p>
+      </li>
+      <li>
+        <p>Based on Java / C#</p>
+      </li>
+      <li>
+        <p>Targets JVM, JavaScript</p>
+      </li>
+      <li>
+        <p>Much boilerplate removed</p>
+      </li>
+      <li>
+        <p>Simpler Functional Programming</p>
+      </li>
+      <li>
+        <p>New type system</p>
+      </li>
+      <li>
+        <p>Modules from the start</p>
+      </li>
+      <li>
+        <p>No-compromise features</p>
+      </li>
+      <li>
+        <p>Great interop (JVM, JavaScript)</p>
+      </li>
+      <li>
+        <p>Runs on mobile (Android, iOS)</p>
+      </li>
+      <li>
+        <p>Modern tooling</p>
+      </li>
+    </ul>
+  </div>
+  <div class="step slide" data-x="0" data-y="800">
+    <h2>A quick tour of the language</h2>
+    <ul>
+      <li>
+        <p>I usually teach the language via demos, but</p>
+      </li>
+      <li>
+        <p>I've been told most of you will be C++ users, so</p>
+      </li>
+      <li>
+        <p>I've added slides to describe more of the language.</p>
+      </li>
+      <li>
+        <p>We can skip to an IDE for demos if you want more concrete examples.</p>
+      </li>
+    </ul>
+  </div>
+  <div id="hello" class="step slide" data-x="1000" data-y="800" data-z="0">
+    <h3>
+      <code>hello()</code>
+    </h3>
+    <p>Let's start with hello world:</p>
+    <pre class="code ceylon"><code data-language="ceylon">shared void hello(String name) {
+    print("Hello ``name``");
+}
+</code></pre>
+    <ul>
+      <li>
+        <p>A function doesn't have to be in a class, it can be declared
+at the top level.</p>
+      </li>
+      <li>
+        <p>The <code>shared</code> annotation means the declaration is visible outside
+its container (in this case outside the module).</p>
+      </li>
+      <li>
+        <p>
+          <code>print</code> is a function from
+the Ceylon language module (<code>ceylon.language</code>) that prints
+to standard output.</p>
+      </li>
+      <li>
+        <p>Double backticks in a string literal is interpolation.</p>
+      </li>
+    </ul>
+  </div>
+  <div id="hello-doc" class="step slide" data-x="2000" data-y="800" data-z="0">
+    <h3>Documentation</h3>
+    <p>Let's add docs:</p>
+    <pre class="code ceylon"><code data-language="ceylon">"This is _Markdown_ documentation"
+shared void hello(String name) {
+    print("Hello ``name``");
+}
+</code></pre>
+    <p>A string literal before a declaration is API documentation.</p>
+    <p>Syntax sugar for the <code>doc</code> annotation:</p>
+    <pre class="code ceylon"><code data-language="ceylon">doc("This is _Markdown_ documentation")
+shared void hello(String name) {
+    print("Hello ``name``");
+}
+</code></pre>
+  </div>
+  <div id="null" class="step slide" data-x="3000" data-y="800" data-z="0">
+    <h3>
+      <code>String</code> means <em>I need a value</em>
+    </h3>
+    <p>I can't do this:</p>
+    <pre class="code ceylon"><code data-language="ceylon">hello(null);// error
+</code></pre>
+    <ul>
+      <li>
+        <p>Ceylon is very particular about <code>null</code>.</p>
+      </li>
+      <li>
+        <p>
+          <code>String</code> means "a string" and not
+"a string or null" (like it does in Java or C++).</p>
+      </li>
+      <li>
+        <p>In fact in Ceylon <code>null</code> has its own type, <code>Null</code>.</p>
+      </li>
+      <li>
+        <p>So I'm not allowed to pass <code>null</code> (or something
+that might be null) to something that's
+not expecting it:
+It follows from the language assignability rules.</p>
+      </li>
+    </ul>
+  </div>
+  <div id="null-safety" class="step slide" data-x="4000" data-y="800" data-z="0">
+    <h3>
+      <code>String?</code>
+    </h3>
+    <p>What if I wanted to permit <code>hello()</code> to take a <code>null</code> argument?</p>
+    <p>I would have to declare it slightly differently:</p>
+    <pre class="code ceylon"><code data-language="ceylon">void hello(String? name) {
+    print("Hello ``name``");// error
+}
+</code></pre>
+    <p>The <code>String?</code> parameter type means "<code>String</code> or null".</p>
+    <p>There's no longer an error at the callsite</p>
+    <pre class="code ceylon"><code data-language="ceylon">hello(null);// now allowed!
+</code></pre>
+    <p>But we've got that <em>new</em> error where we use <code>name</code>.</p>
+  </div>
+  <div id="if-exists" class="step slide" data-x="5000" data-y="800" data-z="0">
+    <h3>
+      <code>if(exists ...)</code>
+    </h3>
+    <ul>
+      <li>Since <code>name</code> has the type
+"<code>String</code> or null" it could be <code>null</code>.</li>
+      <li>We can branch
+to distinguish the two
+cases:<pre class="code ceylon"><code data-language="ceylon">void hello(String? name) {
+    if (exists name) {
+         print("Hello ``name``");
+    } else {
+         print("Hello world");
+    }
+}</code></pre>
+      </li>
+    </ul>
+    <ul>
+      <li>The <code>if (exists ...)</code> construct is (type-narrowing) non-null check</li>
+      <li>Or I could say <code>if (is String name)</code>, a combined
+typecheck-and-downcast in one.</li>
+    </ul>
+  </div>
+  <div id="switch" class="step slide" data-x="6000" data-y="800" data-z="0">
+    <h3>
+      <code>switch</code>
+    </h3>
+    <p>Another way to do the same thing is using <code>switch</code>
+    </p>
+    <pre class="code ceylon"><code data-language="ceylon">void hello(String? name) {
+    switch(name)
+    case (is String) {
+        print("Hello ``name``");
+    } else {
+        print("Hello world");
+    }
+}
+</code></pre>
+    <ul>
+      <li>The <code>case (is String)</code> is distinguishing the <code>String</code>
+case from the <code>Null</code> case.</li>
+      <li>There is no need for <code>break</code>: <code>case</code> never falls through.</li>
+      <li>
+        <code>else</code> is like Java's <code>default</code>
+      </li>
+    </ul>
+  </div>
+  <div id="flow-typing" class="step slide" data-x="7000" data-y="800" data-z="0">
+    <h3>Flow typing</h3>
+    <ul>
+      <li>
+        <p>Outside the <code>if</code> or <code>case</code> the value <code>name</code> is a <code>String?</code>
+        </p>
+      </li>
+      <li>
+        <p>But within the block guarded by the <code>if (exists ...)</code>
+or <code>case(is ...)</code> the compiler treats the
+<code>name</code> value as having the narrower type <code>String</code>.</p>
+        <pre class="code ceylon"><code data-language="ceylon">// outside if block name has type String?
+// (so "Hello ``name``" is a compile error)
+if (exists name) {
+     // inside block name has type String
+     // (so "Hello ``name``" is allowed)
+}</code></pre>
+      </li>
+    </ul>
+    <ul>
+      <li>This synergy of control flow and
+type narrowing is called <em>flow typing</em>.</li>
+    </ul>
+  </div>
+  <div id="flow-typing-assert" class="step slide" data-x="8000" data-y="800" data-z="0">
+    <h3>Assertions and flow typing</h3>
+    <p>If you know something has to exist, you don't need <code>if</code>
+    </p>
+    <pre class="code ceylon"><code data-language="ceylon">void badlyTypedHello(String? name) {
+    assert(exists name);
+    // from then on, name has type String
+    print("Hello ``name``, how are you?");
+}
+</code></pre>
+  </div>
+  <div id="union1" class="step slide" data-x="9000" data-y="800" data-z="0">
+    <h3>
+      <code>?</code> was just sugar</h3>
+    <p>This <code>String?</code> type is just syntax sugar. It means</p>
+    <pre class="code ceylon"><code data-language="ceylon">String|Null
+</code></pre>
+    <p>(pronounced "string or null"). </p>
+    <ul>
+      <li>
+        <p>In a type <code>|</code> is an operator which means "or".</p>
+      </li>
+      <li>
+        <p>It lets us list a bunch of cases.</p>
+      </li>
+    </ul>
+    <p>We can use arbitrary other types with <code>|</code>.</p>
+    <pre class="code ceylon"><code data-language="ceylon">String|Integer|Boolean
+</code></pre>
+    <p>just means "<code>String</code> or <code>Integer</code> or <code>Boolean</code>". </p>
+    <ul>
+      <li>
+        <p>We can still use <code>if</code> or <code>switch</code> to distinguish the cases.</p>
+      </li>
+      <li>
+        <p>We call these types <em>union types</em>.</p>
+      </li>
+    </ul>
+  </div>
+  <div class="step slide" data-x="10000" data-y="800" data-z="0">
+    <h3>
+      <code>exists</code> was just sugar too!</h3>
+    <p>This <code>exists</code> operator is just syntax sugar. It means</p>
+    <pre class="code ceylon"><code data-language="ceylon">is Object x
+</code></pre>
+    <p>which checks if a value <code>x</code> of type <code>T</code> is of type <code>T &amp; Object</code>.</p>
+    <ul>
+      <li>
+        <p>In a type <code>&amp;</code> is an operator which means "and".</p>
+      </li>
+      <li>
+        <p>It lets us list a bunch of cases that all have to
+be implemented.</p>
+      </li>
+    </ul>
+    <p>We can use arbitrary other types with <code>&amp;</code>.</p>
+    <pre class="code ceylon"><code data-language="ceylon">Runnable &amp; Destroyable
+</code></pre>
+    <p>just means "<code>Runnable</code> and <code>Destroyable</code>". </p>
+    <ul>
+      <li>
+        <p>We call these types <em>intersection types</em>.</p>
+      </li>
+    </ul>
+  </div>
+  <div class="step slide" data-x="11000" data-y="800" data-z="0">
+    <img style="float: right" src="type-hierarchy.svg" width="500">
+    <h3>What does <code>String? &amp; Object</code> mean?</h3>
+    <p>Let's decompose it to <code>&lt;String | Null> &amp; Object</code>.</p>
+    <ul>
+      <li>
+        <p>Let's distribute the intersection:</p>
+        <ul>
+          <li>
+            <code>&lt;String &amp; Object> | &lt;Null &amp; Object></code>
           </li>
         </ul>
       </li>
-      <li>et puis un poil de slides ensuite</li>
-      <li>pour la fin</li>
+      <li>
+        <p>The top of the object hierarchy is <code>Anything</code>.</p>
+        <ul>
+          <li>It has two disjoint subtypes: <code>Object</code> and <code>Null</code>.</li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <code>String</code> extends <code>Object</code>, so its intersection with
+<code>Object</code> is <code>String</code>:</p>
+        <ul>
+          <li>
+            <code>String | &lt;Null &amp; Object></code>.</li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <code>Object</code> and <code>Null</code> are disjoint, so their intersection
+is <code>Nothing</code> (the bottom type which has no instance):</p>
+        <ul>
+          <li>
+            <code>String | Nothing</code>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>So the result is just <code>String</code>.</p>
+      </li>
     </ul>
   </div>
-  <div id="tourne" class="step slide" data-x="2000" data-y="0" data-z="0">
-    <h3>Et pourtant, ça tourne !</h3>
-    <p>Ceylon ça tourne</p>
+  <div id="defaulted-parameters" class="step slide" data-x="12000" data-y="800" data-z="0">
+    <h3>Defaulted parameters</h3>
+    <p>What if we want to be able to call <code>hello</code>
+without passing an argument? </p>
+    <p>Ceylon doesn't
+have method overloading like Java does.
+But we <em>can</em> give parameters a default value.</p>
+    <pre class="code ceylon"><code data-language="ceylon">void hello(String name = "world") {
+     print("Hello ``name``");
+ }
+</code></pre>
+    <p>then we can call it like this:</p>
+    <pre class="code ceylon"><code data-language="ceylon">// call site
+hello();
+hello("Tom");
+</code></pre>
+  </div>
+  <div id="hof" class="step slide" data-x="13000" data-y="800" data-z="0">
+    <h3>Abstrating away <code>print()</code>
+    </h3>
+    <p>
+      <code>hello()</code> is nice, but it hard-codes the fact that
+we're writing to standard output (by using <code>print</code>). </p>
+    <p>I now
+want to abstract away where we're sending the
+greeting.</p>
+  </div>
+  <div id="hof2" class="step slide" data-x="0" data-y="1600">
+    <h3>Types of functions</h3>
     <ul>
       <li>
-        <p>sur la JVM, sur JavaScript</p>
+        <p>I don't need an interface to do this.</p>
       </li>
       <li>
-        <p>sur JBoss Modules, OSGi, Java 9, classpath, Maven, Gradle</p>
+        <p>All I need is something that consumes <code>String</code>s.</p>
       </li>
       <li>
-        <p>sur Vert.x, Gyokuro, WildFly, Swarm, SpringBoot, Spark Framework</p>
-      </li>
-      <li>
-        <p>sur Android, iOS</p>
-      </li>
-      <li>
-        <p>sur Eclipse, IntelliJ, Android Studio, VSCode, Vim</p>
-      </li>
-      <li>
-        <p>sur la ligne de commande</p>
-      </li>
-      <li>
-        <p>sur OpenShift</p>
+        <p>Any function that takes a single <code>String</code>
+parameter will do.</p>
       </li>
     </ul>
+    <p>The type of such a function is</p>
+    <pre class="code ceylon"><code data-language="ceylon">Anything(String)
+</code></pre>
+    <p>(<code>Anything</code> because I don't care what the
+function returns).</p>
+    <p>This is an example of the <code>Callable</code> type: <code>Callable&lt;Anything,[String]></code>.</p>
   </div>
-  <div id="part-2" class="step slide" data-x="0" data-y="800">
-    <h2>Un microservice de nombre aléatoire avec <code>ceylon.http.server</code>
-    </h2>
-    <pre class="code plain"><code data-language="plain">http://localhost:8081/numbers/number?min={min}&amp;max={max}</code></pre>
-    <ul>
-      <li>
-        <p>Demo dans Eclipse</p>
-      </li>
-    </ul>
+  <div id="hof3" class="step slide" data-x="1000" data-y="1600" data-z="0">
+    <h3>Callables &amp; function references</h3>
+    <p>Let's add a parameter for that:</p>
+    <pre class="code ceylon"><code data-language="ceylon">void hello(String name, 
+           Anything(String) emit) {
+    emit("Hello ``name``");
+}
+</code></pre>
+    <p>I invoke the function <code>emit</code> by adding an argument list.
+At a call site I have to pass a function:</p>
+    <pre class="code ceylon"><code data-language="ceylon">hello("Tom", print);
+</code></pre>
+    <p>
+      <code>print</code> (without parentheses) is just a reference to the
+<code>print()</code> function.</p>
   </div>
-  <div id="part-3" class="step slide" data-x="1000" data-y="800" data-z="0">
-    <h2>Deux microservices pour servir des adjectifs et verbes avec Vert.x</h2>
-    <pre class="code plain"><code data-language="plain">http://localhost:8082/adjective/adjective
-http://localhost:8082/adjective/adverb
+  <div id="hof4" class="step slide" data-x="2000" data-y="1600" data-z="0">
+    <h3>Function parameters</h3>
+    <p>Alternatively instead of declaring <code>emit</code> as a
+<code>Callable</code>-type value parameter,
+I can declare <code>emit</code> as a function parameter:</p>
+    <pre class="code ceylon"><code data-language="ceylon">void hello(String name, 
+           void emit(String str)) {
+    emit("Hello ``name``");
+}
+</code></pre>
+    <p>It means (almost) exactly the same thing.</p>
+  </div>
+  <div id="hof5" class="step slide" data-x="3000" data-y="1600" data-z="0">
+    <h3>Function references</h3>
+    <p>With this abstraction I can print to a file, or a
+socket or whatever:</p>
+    <pre class="code ceylon"><code data-language="ceylon">hello("Tom", fileWriter.write);
+hello("Tom", socket.write);
+hello("Tom", stringBuilder.append);
+// etc.
+</code></pre>
+    <p>Or with a lambda, of course:</p>
+    <pre class="code ceylon"><code data-language="ceylon">hello("Tom", (x) => print("[log] +"x));
+</code></pre>
+  </div>
+  <div class="step slide" data-x="4000" data-y="1600" data-z="0">
+    <h3>Functions and subtyping 1/3</h3>
+    <p>Hold on, I've been passing <code>print</code>:</p>
+    <pre class="code ceylon"><code data-language="ceylon">shared void print(Anything val){...} 
+</code></pre>
+    <p>Which is of type <code>Anything(Anything)</code>, to
+a functional parameter of type <code>Anything(String)</code>…</p>
+    <p>This follows standard subtyping in Ceylon, which has declaration-site
+covariance and contravariance.</p>
+  </div>
+  <div class="step slide" data-x="5000" data-y="1600" data-z="0">
+    <h3>Variance</h3>
+    <p>In Java, we have use-site variance:</p>
+    <pre class="code ceylon"><code data-language="ceylon">class Animal {}
+class Dog extends Animal{}
+class Cat extends Animal{}
 
-http://localhost:8083/verb</code></pre>
+List&lt;Dog> dogs = Arrays.asList(new Dog());
+List&lt;Animal> animals = dogs; // ERROR: List is invariant
+// Covariance: anyAnimal contains subtypes of Animal
+List&lt;? extends Animal> anyAnimal = dogs;
+// Contravariance: anyDogSupertype contains supertypes of Dog
+List&lt;? super Dog> anyDogSupertype = animals;
+</code></pre>
+    <p>This uses <em>wildcards</em> and <em>wildcard capture</em>, which are hard to understand
+and bug prone as well as verbose.           </p>
+  </div>
+  <div class="step slide" data-x="6000" data-y="1600" data-z="0">
+    <h3>Declaration-site variance</h3>
+    <p>In Ceylon, we use <code>in</code> for contravariance, <code>out</code> for covariance:</p>
+    <pre class="code ceylon"><code data-language="ceylon">shared interface Correspondence&lt;in Key, out Item = Anything>
+   given Key satisfies Object {
+    shared formal Item? get(Key key);
+}
+
+Correspondence&lt;Animal, Animal> animalsMap = map { dog -> cat };
+
+// narrow the key, widen the item
+Correspondence&lt;Cat, Object> catMap = animalsMap;
+Object? obj1 = catMap.get(cat); // will be null, but valid
+
+// widen the key, narrow the item
+Correspondence&lt;Object, Cat> bogusMap = animalsMap; // ERROR
+</code></pre>
+    <p>Ceylon supports both declaration-site and use-site variance (for interop).           </p>
+  </div>
+  <div class="step slide" data-x="7000" data-y="1600" data-z="0">
+    <h3>Functions and subtyping 2/3</h3>
+    <pre class="code ceylon"><code data-language="ceylon">shared native interface Callable&lt;out Return, in Arguments> 
+    given Arguments satisfies Anything[] {}
+</code></pre>
+    <p>Roughly speaking, the <code>Callable</code> type is a subtype of another:  </p>
     <ul>
       <li>
-        <p>Demo dans Eclipse</p>
+        <p>If it returns a narrower type.</p>
+        <ul>
+          <li>For example, returning a <code>String</code> is also an <code>Object</code>.</li>
+        </ul>
+      </li>
+      <li>
+        <p>And/or if it takes a broader set of parameter types.</p>
+        <ul>
+          <li>If it accepts <code>Anything</code>, we can pass it a <code>String</code>.</li>
+        </ul>
+      </li>
+    </ul>
+    <p>For example, <code>print</code>'s <code>Anything(Anything)</code>
+is assignable to <code>Anything(String)</code>, because subtyping says so, thanks to variance
+and union types.</p>
+  </div>
+  <div class="step slide" data-x="8000" data-y="1600" data-z="0">
+    <h3>Functions and subtyping 3/3</h3>
+    <p>What is the type of a function with optional parameters?</p>
+    <pre class="code ceylon"><code data-language="ceylon">String f(Integer i = 2) => "Your int: "+i;
+</code></pre>
+    <p>Its type is <code>String(Integer=)</code> which means “Takes an int or no arg”.</p>
+    <p>It's sugar for <code>Callable&lt;String, [] | [Integer]></code>.</p>
+    <p>It is also assignable to <code>Object()</code>, because it always returns an <code>Object</code>
+and is fine with taking no parameters (thanks variance!).</p>
+  </div>
+  <div id="iterable" class="step slide" data-x="0" data-y="2400">
+    <h3>Iteration</h3>
+    <p>What if I want to greet several people? </p>
+    <p>I need <code>names</code> rather than a single <code>name</code>, and I need to
+be able to iterate it:</p>
+    <pre class="code ceylon"><code data-language="ceylon">void helloAll(void emit(String str), 
+              {String*} names) {
+    for (name in names) {
+        emit("Hello ``name``\n");
+    }
+}
+</code></pre>
+    <ul>
+      <li>
+        <p>
+          <code>{String*}</code> means "<code>Iterable</code> of zero or more <code>String</code>s".</p>
+      </li>
+      <li>
+        <p>(There's also <code>{String+}</code>
+meaning "<code>Iterable</code> of one or more <code>String</code>s").</p>
       </li>
     </ul>
   </div>
-  <div id="part-4" class="step slide" data-x="2000" data-y="800" data-z="0">
-    <h2>Un microservice de générateur click-bait dans gyokuro</h2>
-    <img src="architecture.svg" width="780">
+  <div id="inference" class="step slide" data-x="1000" data-y="2400" data-z="0">
+    <h3>Look, no types!</h3>
+    <p>Note that I didn't need to explicitly declare the type of
+<code>name</code> in that <code>for</code> statement.</p>
+    <pre class="code ceylon"><code data-language="ceylon">for (name in names) {
+</code></pre>
+    <p>The compiler looks on the right hand side (at <code>names</code>), sees an
+<code>Iterable&lt;String></code> so infers that <code>name</code> must be a <code>String</code>.</p>
+  </div>
+  <div id="inference2" class="step slide" data-x="2000" data-y="2400" data-z="0">
+    <h3>Type inference</h3>
+    <p>In fact the compiler can figure out the type of
+a declaration from an expression for local
+values and functions too:</p>
+    <pre class="code ceylon"><code data-language="ceylon">// compiler knows greeting is a String
+value greeting = "Hello ";
+</code></pre>
     <ul>
       <li>
-        <p>Demo dans Eclipse</p>
+        <p>We can usually use the <code>value</code> (or <code>function</code>)
+keyword where we  would have to write a type.</p>
+      </li>
+      <li>
+        <p>The compiler always chooses the single
+most specific type (by looking at the assigned expression).</p>
+      </li>
+      <li>
+        <p>This is called <em>type inference</em>.</p>
       </li>
     </ul>
   </div>
-  <div id="part-5" class="step slide" data-x="3000" data-y="800" data-z="0">
-    <h2>Application Android</h2>
+  <div id="iterable-literals" class="step slide" data-x="3000" data-y="2400" data-z="0">
+    <h3>Iterable literals</h3>
+    <ul>
+      <li>How might I call <code>helloAll()</code>?</li>
+      <li>I need an iterable.</li>
+      <li>I can use an <em>iterable literal</em>:<pre class="code ceylon"><code data-language="ceylon">value names = {"Tom", "Dick", "Harry"};
+helloAll(print, names);</code></pre>
+      </li>
+    </ul>
+    <ul>
+      <li>The type of <code>names</code> is <code>{String+}</code> ("<code>Iterable</code> of one or more <code>String</code>s").</li>
+      <li>
+        <code>Iterable</code> literals are <em>lazily evaluated</em>.</li>
+    </ul>
+  </div>
+  <div id="tuple-literals" class="step slide" data-x="4000" data-y="2400" data-z="0">
+    <h3>Tuple literals</h3>
+    <p>Alternatively I could use a <code>Tuple</code> to call <code>helloAll()</code>
+(<code>Tuple</code> inherits <code>Iterable</code>):</p>
+    <pre class="code ceylon"><code data-language="ceylon">value names = ["Tom", "Dick", "Harry"];
+helloAll(print, names);
+</code></pre>
     <ul>
       <li>
-        <p>Demo dans Android Studio</p>
+        <p>The type of <code>names</code> is <code>String[3]</code> (which means <code>[String, String, String]</code>).</p>
+      </li>
+      <li>
+        <p>A <code>Tuple</code> knows the type of each of its elements (so I can have
+<code>[String, Integer, Boolean]</code> for example).</p>
+      </li>
+      <li>
+        <p>A <code>[String, Integer, Boolean]</code> is a <code>{String|Integer|Boolean+}</code>
+        </p>
       </li>
     </ul>
   </div>
-  <div id="part-5b" class="step slide" data-x="4000" data-y="800" data-z="0">
-    <h2>Application iOS</h2>
+  <div id="comprehension" class="step slide" data-x="5000" data-y="2400" data-z="0">
+    <h3>Comprehension</h3>
+    <p>A comprehension lets me create an iterable or tuple by filtering,
+mapping and combining other iterables.</p>
+    <pre class="code ceylon"><code data-language="ceylon">void greetDogOwners({Animal*} pets) {
+    helloAll(print, {for (pet in pets)
+                      if (is Dog pet) 
+                        pet.owner});
+}
+</code></pre>
     <ul>
       <li>
-        <p>Avec Cordova</p>
+        <p>Rather than listing elements in the iterable or tuple literal I use <code>for</code> within the brackets,</p>
       </li>
       <li>
-        <p>Demo sur la maudite machine grise</p>
+        <p>the <code>if</code> filters out the non-<code>Dog</code>s,</p>
+      </li>
+      <li>
+        <p>then I get the <code>Dog</code>'s <code>owner</code>.</p>
+      </li>
+      <li>
+        <p>In general, I can combine <code>for</code> and <code>if</code> arbitrarily.</p>
+      </li>
+      <li>
+        <p>Easier to read that <code>map()</code>, <code>filter()</code> etc.</p>
       </li>
     </ul>
   </div>
-  <div id="part-6" class="step slide" data-x="0" data-y="1600">
-    <h2>Environements</h2>
+  <div id="class" class="step slide" data-x="6000" data-y="2400" data-z="0">
+    <h3>A class</h3>
+    <p>Let's use a class to say more than just "hello":</p>
+    <pre class="code ceylon"><code data-language="ceylon">class Greeter(void emit(String str)) {
+    value greeting = "Hello";
+    value parting = "Cheerio";
+    shared void hello(String name) {
+        emit("``greeting`` ``name``");
+    }
+    shared void bye(String name) { /* ... */ }
+    }
+}
+</code></pre>
     <ul>
       <li>
-        <p>JBoss Modules</p>
+        <p>The class has its own parameter list.</p>
       </li>
       <li>
-        <p>Flat classpath</p>
+        <p>I can use <code>emit</code> because it is in an outer scope of <code>hello</code>.</p>
       </li>
       <li>
-        <p>Java 9</p>
-      </li>
-      <li>
-        <p>Fat jar</p>
+        <p>As before, <code>shared</code> allows the methods to be visible outside their container
+(<code>Greeter</code> in this case).</p>
       </li>
     </ul>
   </div>
-  <div id="part-6b" class="step slide" data-x="1000" data-y="1600" data-z="0">
-    <h2>Conteneurs</h2>
+  <div id="" class="step slide" data-x="7000" data-y="2400" data-z="0">
+    <h3>Instantiation and invocation</h3>
+    <p>I instantiate the class just by invoking it
+(no need for <code>new</code>). </p>
+    <p>I can do that with positional arguments:</p>
+    <pre class="code ceylon"><code data-language="ceylon">Greeter(print);
+</code></pre>
+    <p>Or I can invoke with <em>named arguments</em>:</p>
+    <pre class="code ceylon"><code data-language="ceylon">Greeter{
+    emit = print;
+};
+</code></pre>
+    <p>Note: each name binding ends with a <code>;</code>.</p>
+  </div>
+  <div id="named-arguments" class="step slide" data-x="8000" data-y="2400" data-z="0">
+    <h3>Named arguments</h3>
+    <p>With named argument invocation there's some flexibility
+in how I pass <code>Iterable</code> arguments.
+I can pass them by name:</p>
+    <pre class="code ceylon"><code data-language="ceylon">helloAll{
+    emit  = print;
+    names = ["Tom", "Dick", "Harry"];
+};
+</code></pre>
+    <p>Or if there is a single unspecified <code>Iterable</code> parameter
+I can list them:</p>
+    <pre class="code ceylon"><code data-language="ceylon">helloAll{
+    emit = print,
+    "Tom", "Dick", "Harry"
+};
+</code></pre>
+  </div>
+  <div class="step slide" data-x="9000" data-y="2400" data-z="0">
+    <h3>More about functions</h3>
+    <p>We also have: </p>
     <ul>
       <li>
-        <p>WildFly</p>
+        <p>Reified generics</p>
+        <pre class="code ceylon"><code data-language="ceylon">interface Iterable&lt;Element> {
+    Iterable&lt;Element&amp;Type> narrow&lt;Type>()
+       => {for(elem in this) if(is Type elem) elem};</code></pre>
       </li>
-      <li>
-        <p>WildFly Swarm</p>
-      </li>
-      <li>
-        <p>Spring Boot</p>
-      </li>
-      <li>
-        <p>Spark Framework</p>
-      </li>
-      <li>
-        <p>OSGi / Karaf</p>
+    </ul>
+    <ul>
+      <li>Even Type Functions in beta.<ul>
+          <li>The type of a generic lambda, for example.</li>
+        </ul>
       </li>
     </ul>
   </div>
-  <div id="1.3" class="step slide" data-x="0" data-y="2400">
-    <h3>Ceylon 1.3</h3>
+  <div class="step slide" data-x="0" data-y="3200">
+    <h3>Modularity</h3>
+    <p>In Ceylon, everything is a module. If you don't declare one,
+you're in the <em>default</em> module.</p>
+    <p>The <code>ceylon.language</code> module is the only requirement. The rest
+is in a modular SDK, like <code>ceylon.collection</code> or <code>ceylon.io</code>.</p>
+    <p>Every tool understands modules, and know how to fetch dependencies,
+and publish new modules. IDEs and CLI will auto-complete modules
+and generally help you.</p>
+    <pre class="code ceylon"><code data-language="ceylon">module com.example "1.0" {
+    import ceylon.collection "1.3.2";
+    import ceylon.json "1.3.2";
+    // Maven modules
+    import maven:org.junit:junit "4.2";
+    // JDK
+    import java.base "8";
+}
+</code></pre>
+    <p>This means in many cases you don't need a build tool!</p>
+  </div>
+  <div class="step slide" data-x="1000" data-y="3200" data-z="0">
+    <h3>Interoperability</h3>
+    <p>Ceylon is fully interoperable with its backends: JVM, JavaScript,
+and experimentally, Dart.</p>
+    <p>On JVM:</p>
     <ul>
       <li>
-        <p>Sorti en septembre 2016</p>
+        <p>JDK, Maven, OSGi, JBoss modules.</p>
       </li>
       <li>
-        <p>IntelliJ</p>
+        <p>Ant, Maven, Gradle plugins.</p>
       </li>
       <li>
-        <p>Android</p>
+        <p>Runs on JVM, Java 9, WildFly, Swarm, Spring Boot, OpenShift…</p>
       </li>
       <li>
-        <p>Interop avec modules NPM</p>
+        <p>Android.</p>
+      </li>
+    </ul>
+    <p>On JavaScript:</p>
+    <ul>
+      <li>
+        <p>NPM, require.js modules.</p>
       </li>
       <li>
-        <p>API de Services</p>
+        <p>Runs in browsers, node.js.</p>
+      </li>
+      <li>
+        <p>iOS (via Cordova)</p>
+      </li>
+    </ul>
+  </div>
+  <div class="step slide" data-x="2000" data-y="3200" data-z="0">
+    <h3>Metaprogramming</h3>
+    <p>Metaprogramming allows you to introspect your Ceylon program:</p>
+    <ul>
+      <li>
+        <p>list of modules, or a particular one</p>
+      </li>
+      <li>
+        <p>list of packages for a module</p>
+      </li>
+      <li>
+        <p>list of declarations for a package</p>
+      </li>
+      <li>
+        <p>for example, find all functions annotated with <code>deploy</code>
+        </p>
+      </li>
+    </ul>
+    <p>Example: this is how we deploy verticles in a list of packages:</p>
+    <pre class="code ceylon"><code data-language="ceylon">deploy(`package`, `package com.example.main`, `package com.example.others`);           
+</code></pre>
+  </div>
+  <div class="step slide" data-x="3000" data-y="3200" data-z="0">
+    <h3>Tooling</h3>
+    <p>Ceylon has two full-featured IDE plugins for Eclipse and IntelliJ.</p>
+    <p>Support for Android Studio. Also seen modes for Emacs and Vim, prototypes
+for VisualStudio Code.</p>
+    <p>Great CLI based on Git's CLI, with plugins, auto-completion.</p>
+    <pre class="code ceylon"><code data-language="ceylon">$ ceylon compile, run 
+</code></pre>
+    <p>Herd module repository to make module publishing easy.</p>
+  </div>
+  <div id="1.3.2" class="step slide" data-x="0" data-y="4000">
+    <h3>Ceylon 1.3.2 (1.3.x)</h3>
+    <ul>
+      <li>
+        <p>Released March 2017</p>
+      </li>
+      <li>
+        <p>IntelliJ, Android</p>
+      </li>
+      <li>
+        <p>NPM modules interop</p>
+      </li>
+      <li>
+        <p>Services API</p>
       </li>
       <li>
         <p>fat-jar, swarm</p>
       </li>
       <li>
-        <p>Runtime à la diète</p>
+        <p>Slimmer run-time</p>
       </li>
       <li>
-        <p>Processeurs APT</p>
+        <p>APT processors</p>
+      </li>
+      <li>
+        <p>Java 8 lambdas interop</p>
+      </li>
+      <li>
+        <p>Maven plugin enhancements</p>
       </li>
     </ul>
   </div>
-  <div id="1.3.1" class="step slide" data-x="1000" data-y="2400" data-z="0">
-    <h3>Ceylon 1.3.1</h3>
+  <div id="1.3.x" class="step slide" data-x="1000" data-y="4000" data-z="0">
+    <h3>Future releases</h3>
     <ul>
       <li>
-        <p>Sorti en novembre 2016</p>
+        <p>Move to Eclipse Foundation</p>
       </li>
       <li>
-        <p>Interop avec les lambdas Java 8</p>
+        <p>Co-routines, async/await</p>
       </li>
       <li>
-        <p>Interop avec Spring Boot, Hibernate, RESTEasy, JAXB, JAX-RS,
-Weld, Guice</p>
+        <p>Finish TypeScript interop</p>
       </li>
       <li>
-        <p>OSGi : Equinox, Karaf, Felix</p>
-      </li>
-      <li>
-        <p>Spark, RxJava, JOGL</p>
-      </li>
-    </ul>
+        <p>Finish Type Functions support</p>
+      </li><insert your wish here></ul>
   </div>
-  <div class="step slide" data-x="2000" data-y="2400" data-z="0">
-    <h3>Et puis quoi encore ?</h3>
-    <p>Beaucoup d’autres fonctionalités dans Ceylon : types, SDK, JavaScript,
-fonctions…</p>
-    <p>Ceylon 1.3.2 (encore plus d’interop avec Maven et Maven Central) en février.</p>
+  <div class="step slide" data-x="2000" data-y="4000" data-z="0">
+    <h3>What now?</h3>
+    <p>Much more functionality than I could show…</p>
+    <p>Check out our site with awesome getting started guide and try the language online.</p>
     <ul>
       <li>
         <p>
           <a href="http://ceylon-lang.org">http://ceylon-lang.org</a>
+        </p>
+      </li>
+      <li>
+        <p>
+          <a href="https://herd.ceylon-lang.org">https://herd.ceylon-lang.org</a>
         </p>
       </li>
       <li>
@@ -235,7 +886,7 @@ fonctions…</p>
       </li>
     </ul>
   </div>
-  <div id="overview" class="step slide" data-x="-400" data-y="1000" data-z="5000" data-rotate-x="0" data-rotate-y="-35" data-rotate-z="0"></div>
+  <div id="overview" class="step slide" data-x="-400" data-y="2600" data-z="5000" data-rotate-x="0" data-rotate-y="-35" data-rotate-z="0"></div>
 </div>
     <script src="js/impress.js"></script>
     <script src="js/rainbow-custom.min.js"></script>

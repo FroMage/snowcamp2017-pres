@@ -14,38 +14,35 @@ import com.github.tombentley.deck {
     (State state) => State(0, 0, 0),
     Slide{
         id="title";
-        H2{"Ceylon 1.3 dans tous ses états"},
+        H2{"Introduction to Ceylon: a modern language with modern tooling"},
         H3{"Stéphane Épardaud"},
-        H3{"SnowCamp, Grenoble, 2017"}
+        H3{"Global Technical Forum, Amadeus, 2017"}
         
     },
     transitions.left,
     Slide{
         id="plan";
-        """### Bien sûr que j’ai un plan…
+        """### The menu for today
            
-           * très peu de slides
-           * pas mal de démos
-             * certaines piquées à Tom Bentley
-             * enfin, adaptées
-             * mais pas seulement…
-           * et puis un poil de slides ensuite
-           * pour la fin
+           * Ceylon language primer
+           * Demos (if we have time)
+           * Questions
            """
     },
     Slide{
-        id="tourne";
-        """### Et pourtant, ça tourne !
+        """### What is Ceylon?
            
-           Ceylon ça tourne
-           
-           * sur la JVM, sur JavaScript
-           * sur JBoss Modules, OSGi, Java 9, classpath, Maven, Gradle
-           * sur Vert.x, Gyokuro, WildFly, Swarm, SpringBoot, Spark Framework
-           * sur Android, iOS
-           * sur Eclipse, IntelliJ, Android Studio, VSCode, Vim
-           * sur la ligne de commande
-           * sur OpenShift
+           * Modern programming language
+           * Based on Java / C#
+           * Targets JVM, JavaScript
+           * Much boilerplate removed
+           * Simpler Functional Programming
+           * New type system
+           * Modules from the start
+           * No-compromise features
+           * Great interop (JVM, JavaScript)
+           * Runs on mobile (Android, iOS)
+           * Modern tooling
            """
     }
 };

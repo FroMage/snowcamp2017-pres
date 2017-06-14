@@ -9,43 +9,43 @@ import com.github.tombentley.deck {
     transitions
 }
 {Slide|Transition*} outro => {
-    (State state) => State(0, 2400),
+    (State state) => State(0, 4000),
     Slide{
-        id="1.3";
-        """### Ceylon 1.3
+        id="1.3.2";
+        """### Ceylon 1.3.2 (1.3.x)
            
-           * Sorti en septembre 2016
-           * IntelliJ
-           * Android
-           * Interop avec modules NPM
-           * API de Services
+           * Released March 2017
+           * IntelliJ, Android
+           * NPM modules interop
+           * Services API
            * fat-jar, swarm
-           * Runtime à la diète
-           * Processeurs APT
+           * Slimmer run-time
+           * APT processors
+           * Java 8 lambdas interop
+           * Maven plugin enhancements
            """
     },
     transitions.left,
     Slide{
-        id="1.3.1";
-        """### Ceylon 1.3.1
+        id="1.3.x";
+        """### Future releases
            
-           * Sorti en novembre 2016
-           * Interop avec les lambdas Java 8
-           * Interop avec Spring Boot, Hibernate, RESTEasy, JAXB, JAX-RS,
-             Weld, Guice
-           * OSGi : Equinox, Karaf, Felix
-           * Spark, RxJava, JOGL
+           * Move to Eclipse Foundation
+           * Co-routines, async/await
+           * Finish TypeScript interop
+           * Finish Type Functions support
+           * <insert your wish here>
            """
     },
     Slide {
-        """### Et puis quoi encore ?
+        """### What now?
            
-           Beaucoup d’autres fonctionalités dans Ceylon : types, SDK, JavaScript,
-           fonctions…
+           Much more functionality than I could show…
            
-           Ceylon 1.3.2 (encore plus d’interop avec Maven et Maven Central) en février.
+           Check out our site with awesome getting started guide and try the language online.
            
            * [http://ceylon-lang.org](http://ceylon-lang.org)
+           * [https://herd.ceylon-lang.org](https://herd.ceylon-lang.org)
            * [https://gitter.im/ceylon/user](https://gitter.im/ceylon/user)
            * [https://groups.google.com/group/ceylon-users](https://groups.google.com/group/ceylon-users)
            """

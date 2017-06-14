@@ -10,7 +10,7 @@ import ceylon.html {
 }
 
 {Slide|Transition*} part6 = [
-    (State state) => State(0, 1600),
+    (State state) => State(0, 2400),
     Slide{
         id="part-6";
         """## Environements
